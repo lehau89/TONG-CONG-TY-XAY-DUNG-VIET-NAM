@@ -1,713 +1,2222 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TỔNG CÔNG TY XÂY DỰNG VIỆT NAM</title>
-  <style>
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
 
-    /* ================= 1. MÀN HÌNH ĐĂNG NHẬP ================= */
-    #auth-screen {
-      min-height: 100vh;
-      background: #1a3274;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .login-card {
-      background: #fdfefe;
-      width: 100%;
-      max-width: 380px;
-      border-radius: 24px;
-      padding: 30px 22px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
-    .company-title {
-      text-align: center;
-      color: #273859;
-      font-size: 15.5px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .company-subtitle {
-      text-align: center;
-      font-size: 12px;
-      color: #6c757d;
-      margin-top: 5px;
-      margin-bottom: 20px;
-    }
-    .alert-banner {
-      background: #d4d8df;
-      color: #495057;
-      text-align: center;
-      font-size: 12.5px;
-      line-height: 1.4;
-      padding: 10px 12px;
-      border-radius: 8px;
-      margin-bottom: 18px;
-      display: none;
-    }
-    .input-group { margin-bottom: 16px; }
-    .input-group label { display: block; font-size: 13px; font-weight: 600; color: #2d3748; margin-bottom: 6px; }
-    .input-group input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d2d6dc;
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
-    }
-    .input-group input:focus { border-color: #344768; }
-    .input-hint { font-size: 11px; color: #64748b; margin-top: 4px; line-height: 1.3; }
-    .btn-submit-login {
-      width: 100%;
-      background: #344768;
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 7px;
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      text-transform: uppercase;
-    }
-    .btn-submit-login:hover { background: #25334c; }
+    <meta charset="UTF-8">
 
-    /* ================= 2. MÀN HÌNH QUẢN TRỊ ================= */
-    #admin-screen { display: none; background: #f4f6fa; min-height: 100vh; }
-    header {
-      background: #1e2430;
-      color: #fff;
-      padding: 14px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .brand { color: #f59e0b; font-weight: bold; font-size: 16px; }
-    .header-right { display: flex; align-items: center; gap: 12px; }
-    .user-info { font-size: 13px; color: #94a3b8; }
-    .btn-logout {
-      background: #334155;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 5px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .btn-logout:hover { background: #ef4444; }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* Tabs */
-    .nav-tabs {
-      background: #ffffff;
-      display: flex;
-      padding: 0 24px;
-      border-bottom: 2px solid #e2e8f0;
-      overflow-x: auto;
-    }
-    .nav-btn {
-      padding: 12px 16px;
-      border: none;
-      background: none;
-      font-size: 13.5px;
-      cursor: pointer;
-      color: #64748b;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .nav-btn.active {
-      color: #2563eb;
-      border-bottom: 3px solid #2563eb;
-    }
-    .nav-btn.highlight {
-      color: #d97706;
-    }
-    .nav-btn.highlight.active {
-      color: #d97706;
-      border-bottom: 3px solid #d97706;
-    }
+    <title>Hệ Thống Quản Lý Doanh Nghiệp & Xây Dựng</title>
 
-    /* Container 4 tab thông thường */
-    .main-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-      max-width: 1400px;
-      margin: auto;
-    }
-    .card {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .left-col { flex: 1; min-width: 290px; }
-    .right-col { flex: 2; min-width: 320px; overflow-x: auto; }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    .form-ctrl { margin-bottom: 12px; }
-    .form-ctrl label { display: block; font-size: 12.5px; color: #475569; margin-bottom: 4px; }
-    .form-ctrl input {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 5px;
-      outline: none;
-    }
-    .btn-save {
-      width: 100%;
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn-cancel-edit {
-      width: 100%;
-      background: #64748b;
-      color: #fff;
-      border: none;
-      padding: 8px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 6px;
-      display: none;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    /* Thanh tiêu đề bảng kèm ô Tìm Kiếm */
-    .table-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .search-box-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .search-input {
-      padding: 7px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 13px;
-      outline: none;
-      min-width: 220px;
-      background: #f8fafc;
-    }
-    .search-input:focus {
-      border-color: #2563eb;
-      background: #fff;
-    }
-    .btn-clear-search {
-      background: #e2e8f0;
-      border: none;
-      color: #475569;
-      padding: 7px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .btn-clear-search:hover { background: #cbd5e1; }
+    <style>
 
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
-    th { background: #f8fafc; color: #475569; padding: 10px; border-bottom: 2px solid #e2e8f0; }
-    td { padding: 10px; border-bottom: 1px solid #e2e8f0; }
-    .btn-edit { background: #f59e0b; color: #fff; border: none; padding: 4px 9px; border-radius: 4px; cursor: pointer; margin-right: 4px; }
-    .btn-del { background: #ef4444; color: #fff; border: none; padding: 4px 9px; border-radius: 4px; cursor: pointer; }
+        :root {
 
-    /* ================= 3. GIAO DIỆN TÌM KIẾM TỔNG HỢP CẢ 4 CÁI ================= */
-    #global-search-container {
-      display: none;
-      max-width: 1400px;
-      margin: auto;
-      padding: 20px;
-    }
-    .search-hero {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .search-hero h2 {
-      font-size: 18px;
-      color: #1e293b;
-      margin-bottom: 8px;
-    }
-    .search-hero p {
-      font-size: 13px;
-      color: #64748b;
-      margin-bottom: 16px;
-    }
-    .global-input-wrapper {
-      max-width: 650px;
-      margin: 0 auto;
-      display: flex;
-      gap: 10px;
-    }
-    .global-input-wrapper input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 15px;
-      outline: none;
-    }
-    .global-input-wrapper input:focus {
-      border-color: #2563eb;
-    }
-    .section-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1e293b;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-    .badge-count {
-      background: #e2e8f0;
-      color: #334155;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
-  </style>
+            --bg-body: #f1f5f9;
+
+            --top-nav-bg: #1a2232;
+
+            --primary-blue: #2563eb;
+
+            --primary-blue-hover: #1d4ed8;
+
+            --orange-text: #f59e0b;
+
+            --dark-card-btn: #334460;
+
+        }
+
+
+
+        body {
+
+            background-color: var(--bg-body);
+
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            color: #1e293b;
+
+        }
+
+
+
+        /* MÀN HÌNH ĐĂNG NHẬP */
+
+        #login-screen {
+
+            background-color: #173670;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+        }
+
+        .login-box {
+
+            background: #ffffff;
+
+            width: 100%;
+
+            max-width: 480px;
+
+            border-radius: 28px;
+
+            padding: 40px 36px;
+
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+
+        }
+
+        .login-header {
+
+            text-align: center;
+
+            margin-bottom: 26px;
+
+        }
+
+        .login-header h2 {
+
+            font-size: 1.15rem;
+
+            font-weight: 800;
+
+            color: #1a3254;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-bottom: 6px;
+
+        }
+
+        .login-header p {
+
+            color: #64748b;
+
+            font-size: 0.95rem;
+
+            margin: 0;
+
+        }
+
+        .form-label {
+
+            font-weight: 600;
+
+            color: #1e293b;
+
+            font-size: 0.92rem;
+
+            margin-bottom: 6px;
+
+        }
+
+        .form-control {
+
+            border-radius: 8px;
+
+            border: 1.5px solid #d1d5db;
+
+            padding: 10px 14px;
+
+            font-size: 0.95rem;
+
+            color: #334155;
+
+        }
+
+        .form-control:focus {
+
+            border-color: #2b394f;
+
+            box-shadow: none;
+
+        }
+
+        .form-hint {
+
+            font-size: 0.82rem;
+
+            color: #64748b;
+
+            margin-top: 5px;
+
+            margin-bottom: 18px;
+
+        }
+
+        .btn-login-submit {
+
+            background-color: var(--dark-card-btn);
+
+            color: #ffffff;
+
+            font-weight: 700;
+
+            padding: 12px;
+
+            width: 100%;
+
+            border-radius: 8px;
+
+            border: none;
+
+            letter-spacing: 0.5px;
+
+            transition: all 0.2s;
+
+            margin-top: 8px;
+
+        }
+
+        .btn-login-submit:hover {
+
+            background-color: #243248;
+
+        }
+
+
+
+        /* GIAO DIỆN CHÍNH */
+
+        #main-app {
+
+            display: none;
+
+            min-height: 100vh;
+
+        }
+
+        .top-navbar {
+
+            background-color: var(--top-nav-bg);
+
+            color: #ffffff;
+
+            padding: 12px 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+        .top-navbar .brand-name {
+
+            font-weight: 700;
+
+            font-size: 1.15rem;
+
+            color: var(--orange-text);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .top-navbar .user-ctrl {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            font-size: 0.9rem;
+
+            color: #cbd5e1;
+
+        }
+
+        .btn-logout {
+
+            background-color: #2b394f;
+
+            color: #ffffff;
+
+            border: 1px solid #475569;
+
+            padding: 4px 14px;
+
+            border-radius: 4px;
+
+            text-decoration: none;
+
+            font-size: 0.85rem;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+        .btn-logout:hover {
+
+            background-color: #ef4444;
+
+            border-color: #ef4444;
+
+            color: #fff;
+
+        }
+
+
+
+        .sub-nav-tabs {
+
+            background-color: #ffffff;
+
+            display: flex;
+
+            border-bottom: 2px solid #e2e8f0;
+
+            padding: 0 24px;
+
+            overflow-x: auto;
+
+        }
+
+        .sub-nav-tab {
+
+            padding: 14px 20px;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 0.92rem;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border-bottom: 3px solid transparent;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            user-select: none;
+
+        }
+
+        .sub-nav-tab:hover {
+
+            color: var(--primary-blue);
+
+        }
+
+        .sub-nav-tab.active {
+
+            color: var(--primary-blue);
+
+            border-bottom: 3px solid var(--primary-blue);
+
+        }
+
+        .sub-nav-tab.highlight {
+
+            color: #d97706;
+
+        }
+
+        .sub-nav-tab.highlight.active {
+
+            border-bottom: 3px solid #d97706;
+
+            color: #b45309;
+
+        }
+
+
+
+        .custom-card {
+
+            background-color: #ffffff;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+
+            border: 1px solid #e2e8f0;
+
+            padding: 24px;
+
+            margin-bottom: 24px;
+
+        }
+
+        .card-header-title {
+
+            font-size: 1.05rem;
+
+            font-weight: 700;
+
+            color: #1e293b;
+
+            margin-bottom: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        .btn-blue-submit {
+
+            background-color: var(--primary-blue);
+
+            color: #ffffff;
+
+            font-weight: 600;
+
+            padding: 10px;
+
+            border-radius: 6px;
+
+            border: none;
+
+            width: 100%;
+
+            transition: 0.2s;
+
+        }
+
+        .btn-blue-submit:hover {
+
+            background-color: var(--primary-blue-hover);
+
+        }
+
+
+
+        .table-custom {
+
+            width: 100%;
+
+            border-collapse: separate;
+
+            border-spacing: 0;
+
+            font-size: 0.9rem;
+
+        }
+
+        .table-custom th {
+
+            background-color: #f8fafc;
+
+            color: #334155;
+
+            font-weight: 700;
+
+            padding: 12px 14px;
+
+            border-bottom: 2px solid #e2e8f0;
+
+        }
+
+        .table-custom td {
+
+            padding: 12px 14px;
+
+            border-bottom: 1px solid #edf2f7;
+
+            color: #334155;
+
+            vertical-align: middle;
+
+        }
+
+        .empty-text {
+
+            color: #ef4444;
+
+            font-style: italic;
+
+            text-align: center;
+
+            padding: 28px;
+
+        }
+
+        .badge-code {
+
+            background-color: #e0e7ff;
+
+            color: #3730a3;
+
+            padding: 3px 8px;
+
+            border-radius: 4px;
+
+            font-weight: 600;
+
+        }
+
+        .tab-content-panel {
+
+            display: none;
+
+        }
+
+        .tab-content-panel.active {
+
+            display: block;
+
+        }
+
+        .action-btns {
+
+            display: flex;
+
+            gap: 6px;
+
+            align-items: center;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-  <!-- ================= 1. MÀN HÌNH ĐĂNG NHẬP ================= -->
-  <div id="auth-screen">
-    <div class="login-card">
-      <div class="company-title">
-        <span>🏗️</span> TỔNG CÔNG TY XÂY DỰNG VIỆT NAM
-      </div>
-      <div class="company-subtitle">Hệ Thống Quản Lý Doanh Nghiệp & Xây Dựng</div>
-      <div id="status-banner" class="alert-banner"></div>
 
-      <form onsubmit="handleLogin(event)">
-        <div class="input-group">
-          <label>Tài khoản đăng nhập</label>
-          <input type="text" id="account-field" value="khai1234567890@qlct.html" required placeholder="tên1234567890@qlct.html">
-          <div class="input-hint">Định dạng: <b>[tên][sdt 10 số]@qlct.html</b></div>
+
+    <!-- MÀN HÌNH ĐĂNG NHẬP -->
+
+    <div id="login-screen">
+
+        <div class="login-box">
+
+            <div class="login-header">
+
+                <h2><span>🏗️</span> TỔNG CÔNG TY XÂY DỰNG VIỆT NAM</h2>
+
+                <p>Hệ Thống Quản Lý Doanh Nghiệp & Xây Dựng</p>
+
+            </div>
+
+
+
+            <div id="login-alert" class="alert alert-danger py-2 px-3 mb-3 text-center d-none" style="font-size:0.88rem;"></div>
+
+
+
+            <form id="form-login" onsubmit="handleLogin(event)">
+
+                <div class="mb-1">
+
+                    <label class="form-label">Tài khoản đăng nhập</label>
+
+                    <input type="text" id="login_user" class="form-control" value="khai1234567890@qlct.html" required>
+
+                    <div class="form-hint">Định dạng: <strong>[tên][sđt 10 số]@qlct.html</strong></div>
+
+                </div>
+
+
+
+                <div class="mb-1">
+
+                    <label class="form-label">Mật khẩu (Số điện thoại)</label>
+
+                    <input type="password" id="login_pass" class="form-control" value="1234567890" required>
+
+                    <div class="form-hint">Mật khẩu chính là <strong>10 số điện thoại</strong> trong tài khoản</div>
+
+                </div>
+
+
+
+                <button type="submit" class="btn-login-submit">ĐĂNG NHẬP</button>
+
+            </form>
+
         </div>
 
-        <div class="input-group">
-          <label>Mật khẩu (Số điện thoại)</label>
-          <input type="password" id="pass-field" value="1234567890" placeholder="Nhập đúng 10 số điện thoại" required maxlength="10">
-          <div class="input-hint">Mật khẩu chính là <b>10 số điện thoại</b> trong tài khoản</div>
-        </div>
-
-        <button type="submit" class="btn-submit-login">ĐĂNG NHẬP</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= 2. MÀN HÌNH QUẢN TRỊ ================= -->
-  <div id="admin-screen">
-    <header>
-      <div class="brand">🏢 TỔNG CÔNG TY XÂY DỰNG VIỆT NAM</div>
-      <div class="header-right">
-        <span class="user-info" id="user-logged-label">khai1234567890@qlct.html</span>
-        <button class="btn-logout" onclick="logout()">Đăng Xuất</button>
-      </div>
-    </header>
-
-    <!-- 4 Tabs Chức Năng + 1 Tab Tra Cứu Toàn Diện -->
-    <div class="nav-tabs">
-      <button class="nav-btn active" onclick="switchNav('congty')">🏢 Quản lý Công ty</button>
-      <button class="nav-btn" onclick="switchNav('phongban')">👥 Quản lý Phòng ban</button>
-      <button class="nav-btn" onclick="switchNav('congtrinh')">🏗️ Quản lý Công trình</button>
-      <button class="nav-btn" onclick="switchNav('hangmuc')">📋 Quản lý Hạng mục</button>
-      <button class="nav-btn highlight" onclick="switchNav('all')">🔍 TRA CỨU TỔNG HỢP (CẢ 4)</button>
-    </div>
-
-    <!-- KHU VỰC 1: Quản lý chi tiết từng tab có Ô TÌM KIẾM -->
-    <div class="main-container" id="standard-crud-container">
-      <div class="card left-col">
-        <h3 id="panel-form-title" style="margin-bottom:12px; font-size:15px;">➕ Thêm Công Ty</h3>
-        <form id="crud-form" onsubmit="saveData(event)">
-          <div id="dynamic-inputs"></div>
-          <button type="submit" class="btn-save">Lưu Thông Tin</button>
-          <button type="button" class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEditMode()">Hủy Chỉnh Sửa</button>
-        </form>
-      </div>
-
-      <div class="card right-col">
-        <!-- Thanh tiêu đề bảng kèm ô Tìm Kiếm trực tiếp -->
-        <div class="table-top-bar">
-          <h3 id="panel-table-title" style="font-size:15px;">📑 Danh Sách Công Ty</h3>
-          <div class="search-box-wrapper">
-            <input type="text" id="tab-search-input" class="search-input" placeholder="🔍 Tìm kiếm..." oninput="handleTabSearch()">
-            <button type="button" class="btn-clear-search" onclick="clearTabSearch()">Xóa</button>
-          </div>
-        </div>
-
-        <table>
-          <thead><tr id="table-headers"></tr></thead>
-          <tbody id="table-rows"></tbody>
-        </table>
-      </div>
     </div>
 
-    <!-- KHU VỰC 2: TRA CỨU TỔNG HỢP - NHẬP 1 TÌM RA CẢ 4 -->
-    <div id="global-search-container">
-      <div class="search-hero">
-        <h2>🔍 Tra Cứu Liên Thông 4 Phân Hệ</h2>
-        <p>Nhập bất kỳ từ khóa nào (Tên công ty, tên dự án, phòng ban, người đại diện, hạng mục thi công...) để tìm toàn bộ dữ liệu liên quan.</p>
-        <div class="global-input-wrapper">
-          <input type="text" id="global-search-input" placeholder="Gõ từ khóa tìm kiếm (VD: 'Cầu Nhật Tân', 'Số 1', 'Bê tông', 'Trần B')..." oninput="runGlobalSearch()">
-        </div>
-      </div>
 
-      <!-- Bảng 1: Công Ty -->
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="section-title">
-          🏢 1. Danh Sách Công Ty Phù Hợp <span class="badge-count" id="count-congty">0</span>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Mã CTY</th><th>Tên Công Ty</th><th>Địa Chỉ</th><th>SĐT</th><th>Đại Diện</th></tr>
-          </thead>
-          <tbody id="global-rows-congty"></tbody>
-        </table>
-      </div>
 
-      <!-- Bảng 2: Phòng Ban -->
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="section-title">
-          👥 2. Danh Sách Phòng Ban Liên Quan <span class="badge-count" id="count-phongban">0</span>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Mã PB</th><th>Tên Phòng Ban</th><th>Thuộc Công Ty</th><th>Trưởng Phòng</th><th>SĐT</th></tr>
-          </thead>
-          <tbody id="global-rows-phongban"></tbody>
-        </table>
-      </div>
+    <!-- MÀN HÌNH CHÍNH -->
 
-      <!-- Bảng 3: Công Trình -->
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="section-title">
-          🏗️ 3. Danh Sách Công Trình Đang Thi Công <span class="badge-count" id="count-congtrinh">0</span>
-        </div>
-        <table>
-          <thead>
-            <tr><th>Mã CT</th><th>Tên Công Trình</th><th>Địa Điểm</th><th>Chủ Đầu Tư</th><th>Dự Toán</th></tr>
-          </thead>
-          <tbody id="global-rows-congtrinh"></tbody>
-        </table>
-      </div>
+    <div id="main-app">
 
-      <!-- Bảng 4: Hạng Mục -->
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="section-title">
-          📋 4. Danh Sách Hạng Mục Dự Án <span class="badge-count" id="count-hangmuc">0</span>
+        <!-- TOP NAVBAR -->
+
+        <div class="top-navbar">
+
+            <div class="brand-name">
+
+                <span>🏢</span> TỔNG CÔNG TY XÂY DỰNG VIỆT NAM
+
+            </div>
+
+            <div class="user-ctrl">
+
+                <span id="display-user">user@qlct.html</span>
+
+                <button onclick="handleLogout()" class="btn-logout">Đăng Xuất</button>
+
+            </div>
+
         </div>
-        <table>
-          <thead>
-            <tr><th>Mã HM</th><th>Tên Hạng Mục</th><th>Thuộc Công Trình</th><th>Khối Lượng</th><th>Tiến Độ</th></tr>
-          </thead>
-          <tbody id="global-rows-hangmuc"></tbody>
-        </table>
-      </div>
+
+
+
+        <!-- TABS MENU -->
+
+        <div class="sub-nav-tabs">
+
+            <div class="sub-nav-tab active" onclick="switchTab('cong_ty', this)">
+
+                <span>🏢</span> Quản lý Công ty
+
+            </div>
+
+            <div class="sub-nav-tab" onclick="switchTab('phong_ban', this)">
+
+                <span>👥</span> Quản lý Phòng ban
+
+            </div>
+
+            <div class="sub-nav-tab" onclick="switchTab('cong_trinh', this)">
+
+                <span>🏗️</span> Quản lý Công trình
+
+            </div>
+
+            <div class="sub-nav-tab" onclick="switchTab('hang_muc', this)">
+
+                <span>📋</span> Quản lý Hạng mục
+
+            </div>
+
+            <div class="sub-nav-tab highlight" onclick="switchTab('tra_cuu', this)">
+
+                <span>🔍</span> TRA CỨU TỔNG HỢP (CẢ 4)
+
+            </div>
+
+        </div>
+
+
+
+        <!-- THÔNG BÁO -->
+
+        <div class="container-fluid px-4 pt-3">
+
+            <div id="action-alert" class="alert alert-success alert-dismissible fade show d-none" role="alert">
+
+                <span id="action-msg"></span>
+
+                <button type="button" class="btn-close" onclick="this.parentElement.classList.add('d-none')"></button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="container-fluid px-4 py-3">
+
+
+
+            <!-- TAB 1: CÔNG TY -->
+
+            <div id="panel-cong_ty" class="tab-content-panel active">
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+                        <div class="custom-card">
+
+                            <div class="card-header-title text-primary" id="title-ct"><i class="fa fa-plus"></i> Thêm Công Ty</div>
+
+                            <form id="form-ct" onsubmit="saveCongTy(event)">
+
+                                <input type="hidden" id="ct_id">
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Mã Công Ty</label>
+
+                                    <input type="text" id="ct_ma" class="form-control" required placeholder="VD: CT01">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Tên Công Ty</label>
+
+                                    <input type="text" id="ct_ten" class="form-control" required placeholder="VD: Công Ty Xây Dựng Số 1">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Địa Chỉ / Địa Điểm</label>
+
+                                    <input type="text" id="ct_diachi" class="form-control" required placeholder="VD: Hà Nội">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Số Điện Thoại</label>
+
+                                    <input type="text" id="ct_sdt" class="form-control" required placeholder="VD: 0912345678">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Người Đại Diện</label>
+
+                                    <input type="text" id="ct_daidien" class="form-control" required placeholder="VD: Nguyễn Văn A">
+
+                                </div>
+
+                                <button type="submit" id="btn-submit-ct" class="btn-blue-submit">Lưu Thông Tin</button>
+
+                                <button type="button" id="btn-cancel-ct" class="btn btn-outline-secondary w-100 mt-2 d-none" onclick="cancelEdit('ct')">Hủy Sửa</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="custom-card">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="card-header-title mb-0"><span>📑</span> Danh Sách Công Ty</div>
+
+                                <div class="d-flex gap-2">
+
+                                    <input type="text" id="search-ct" onkeyup="loadCongTy()" placeholder="🔍 Tìm trong công ty..." class="form-control form-control-sm" style="width:250px;">
+
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('search-ct').value=''; loadCongTy();">Xóa</button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+
+                                <table class="table-custom">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Mã Công Ty</th>
+
+                                            <th>Tên Công Ty</th>
+
+                                            <th>Địa Chỉ / Địa Điểm</th>
+
+                                            <th>Số Điện Thoại</th>
+
+                                            <th>Người Đại Diện</th>
+
+                                            <th>Thao Tác</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="tbody-congty"></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TAB 2: PHÒNG BAN -->
+
+            <div id="panel-phong_ban" class="tab-content-panel">
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+                        <div class="custom-card">
+
+                            <div class="card-header-title text-primary" id="title-pb"><i class="fa fa-plus"></i> Thêm Phòng Ban</div>
+
+                            <form id="form-pb" onsubmit="savePhongBan(event)">
+
+                                <input type="hidden" id="pb_id">
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Mã Phòng Ban</label>
+
+                                    <input type="text" id="pb_ma" class="form-control" required placeholder="VD: PB01">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Tên Phòng Ban</label>
+
+                                    <input type="text" id="pb_ten" class="form-control" required placeholder="VD: Phòng Kỹ Thuật">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Trực Thuộc Công Ty</label>
+
+                                    <input type="text" id="pb_congty" class="form-control" required placeholder="VD: Công Ty Xây Dựng Số 1">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Trưởng Phòng</label>
+
+                                    <input type="text" id="pb_truongphong" class="form-control" required placeholder="VD: Trần Văn B">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Số Điện Thoại</label>
+
+                                    <input type="text" id="pb_sdt" class="form-control" required placeholder="VD: 0988776655">
+
+                                </div>
+
+                                <button type="submit" id="btn-submit-pb" class="btn-blue-submit">Lưu Thông Tin</button>
+
+                                <button type="button" id="btn-cancel-pb" class="btn btn-outline-secondary w-100 mt-2 d-none" onclick="cancelEdit('pb')">Hủy Sửa</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="custom-card">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="card-header-title mb-0"><span>📑</span> Danh Sách Phòng Ban</div>
+
+                                <div class="d-flex gap-2">
+
+                                    <input type="text" id="search-pb" onkeyup="loadPhongBan()" placeholder="🔍 Tìm trong phòng ban..." class="form-control form-control-sm" style="width:250px;">
+
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('search-pb').value=''; loadPhongBan();">Xóa</button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+
+                                <table class="table-custom">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Mã Phòng Ban</th>
+
+                                            <th>Tên Phòng Ban</th>
+
+                                            <th>Trực Thuộc Công Ty</th>
+
+                                            <th>Trưởng Phòng</th>
+
+                                            <th>Số Điện Thoại</th>
+
+                                            <th>Thao Tác</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="tbody-phongban"></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TAB 3: CÔNG TRÌNH (CÓ MÃ PHÒNG BAN) -->
+
+            <div id="panel-cong_trinh" class="tab-content-panel">
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+                        <div class="custom-card">
+
+                            <div class="card-header-title text-primary" id="title-ctrin"><i class="fa fa-plus"></i> Thêm Công Trình</div>
+
+                            <form id="form-ctrin" onsubmit="saveCongTrinh(event)">
+
+                                <input type="hidden" id="ctrin_id">
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Mã Công Trình</label>
+
+                                    <input type="text" id="ctrin_ma" class="form-control" required placeholder="VD: CT-001">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label text-primary">Mã Phòng Ban</label>
+
+                                    <input type="text" id="ctrin_mapb" class="form-control" required placeholder="VD: PB01">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Tên Công Trình</label>
+
+                                    <input type="text" id="ctrin_ten" class="form-control" required placeholder="VD: Cầu Nhật Tân">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Địa Điểm Thi Công</label>
+
+                                    <input type="text" id="ctrin_diadiem" class="form-control" required placeholder="VD: Hà Nội">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Chủ Đầu Tư</label>
+
+                                    <input type="text" id="ctrin_chudautu" class="form-control" required placeholder="VD: Ban QLDA Thăng Long">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Dự Toán (Tỷ VNĐ)</label>
+
+                                    <input type="text" id="ctrin_dutoan" class="form-control" required placeholder="VD: 13600">
+
+                                </div>
+
+                                <button type="submit" id="btn-submit-ctrin" class="btn-blue-submit">Lưu Thông Tin</button>
+
+                                <button type="button" id="btn-cancel-ctrin" class="btn btn-outline-secondary w-100 mt-2 d-none" onclick="cancelEdit('ctrin')">Hủy Sửa</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="custom-card">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="card-header-title mb-0"><span>📑</span> Danh Sách Công Trình</div>
+
+                                <div class="d-flex gap-2">
+
+                                    <input type="text" id="search-ctrin" onkeyup="loadCongTrinh()" placeholder="🔍 Tìm trong công trình..." class="form-control form-control-sm" style="width:250px;">
+
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('search-ctrin').value=''; loadCongTrinh();">Xóa</button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+
+                                <table class="table-custom">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Mã Công Trình</th>
+
+                                            <th>Mã Phòng Ban</th>
+
+                                            <th>Tên Công Trình</th>
+
+                                            <th>Địa Điểm Thi Công</th>
+
+                                            <th>Chủ Đầu Tư</th>
+
+                                            <th>Dự Toán (Tỷ VNĐ)</th>
+
+                                            <th>Thao Tác</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="tbody-congtrinh"></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TAB 4: HẠNG MỤC -->
+
+            <div id="panel-hang_muc" class="tab-content-panel">
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+                        <div class="custom-card">
+
+                            <div class="card-header-title text-primary" id="title-hm"><i class="fa fa-plus"></i> Thêm Hạng Mục</div>
+
+                            <form id="form-hm" onsubmit="saveHangMuc(event)">
+
+                                <input type="hidden" id="hm_id">
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Mã Hạng Mục</label>
+
+                                    <input type="text" id="hm_ma" class="form-control" required placeholder="VD: HM-01">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Tên Hạng Mục</label>
+
+                                    <input type="text" id="hm_ten" class="form-control" required placeholder="VD: Thi công trụ cầu">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Thuộc Công Trình</label>
+
+                                    <input type="text" id="hm_congtrinh" class="form-control" required placeholder="VD: Cầu Nhật Tân">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Khối Lượng / ĐVT</label>
+
+                                    <input type="text" id="hm_khoiluong" class="form-control" required placeholder="VD: 5000 m3">
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Tiến Độ (%)</label>
+
+                                    <input type="number" min="0" max="100" id="hm_tiendo" class="form-control" required placeholder="VD: 85">
+
+                                </div>
+
+                                <button type="submit" id="btn-submit-hm" class="btn-blue-submit">Lưu Thông Tin</button>
+
+                                <button type="button" id="btn-cancel-hm" class="btn btn-outline-secondary w-100 mt-2 d-none" onclick="cancelEdit('hm')">Hủy Sửa</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="custom-card">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="card-header-title mb-0"><span>📑</span> Danh Sách Hạng Mục</div>
+
+                                <div class="d-flex gap-2">
+
+                                    <input type="text" id="search-hm" onkeyup="loadHangMuc()" placeholder="🔍 Tìm trong hạng mục..." class="form-control form-control-sm" style="width:250px;">
+
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('search-hm').value=''; loadHangMuc();">Xóa</button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+
+                                <table class="table-custom">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Mã Hạng Mục</th>
+
+                                            <th>Tên Hạng Mục</th>
+
+                                            <th>Thuộc Công Trình</th>
+
+                                            <th>Khối Lượng / ĐVT</th>
+
+                                            <th>Tiến Độ (%)</th>
+
+                                            <th>Thao Tác</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="tbody-hangmuc"></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TAB 5: TRA CỨU LIÊN THÔNG -->
+
+            <div id="panel-tra_cuu" class="tab-content-panel">
+
+                <div class="custom-card text-center py-4 mb-4">
+
+                    <h4 class="fw-bold mb-2">🔍 Tra Cứu Liên Thông 4 Phân Hệ</h4>
+
+                    <p class="text-muted mb-3" style="font-size: 0.95rem;">Nhập bất kỳ từ khóa nào để tìm kiếm dữ liệu liên thông.</p>
+
+                    <div class="col-md-8 mx-auto">
+
+                        <input type="text" id="search-all" onkeyup="handleGlobalSearch()" class="form-control form-control-lg text-center" placeholder="Gõ từ khóa tìm kiếm (VD: 'Cầu Nhật Tân', 'Số 1', 'Bê tông', 'Trần B')...">
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="custom-card">
+
+                    <div class="card-header-title">🏢 1. Danh Sách Công Ty Phù Hợp <span id="count-ct" class="badge bg-secondary ms-2">0 kết quả</span></div>
+
+                    <div class="table-responsive">
+
+                        <table class="table-custom">
+
+                            <thead><tr><th>Mã CTY</th><th>Tên Công Ty</th><th>Địa Chỉ</th><th>SĐT</th><th>Đại Diện</th></tr></thead>
+
+                            <tbody id="tbody-tc-ct"><tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="custom-card">
+
+                    <div class="card-header-title">👥 2. Danh Sách Phòng Ban Liên Quan <span id="count-pb" class="badge bg-secondary ms-2">0 kết quả</span></div>
+
+                    <div class="table-responsive">
+
+                        <table class="table-custom">
+
+                            <thead><tr><th>Mã PB</th><th>Tên Phòng Ban</th><th>Thuộc Công Ty</th><th>Trưởng Phòng</th><th>SĐT</th></tr></thead>
+
+                            <tbody id="tbody-tc-pb"><tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="custom-card">
+
+                    <div class="card-header-title">🏗️ 3. Danh Sách Công Trình Đang Thi Công <span id="count-ctrin" class="badge bg-secondary ms-2">0 kết quả</span></div>
+
+                    <div class="table-responsive">
+
+                        <table class="table-custom">
+
+                            <thead><tr><th>Mã CT</th><th>Mã PB</th><th>Tên Công Trình</th><th>Địa Điểm</th><th>Chủ Đầu Tư</th><th>Dự Toán</th></tr></thead>
+
+                            <tbody id="tbody-tc-ctrin"><tr><td colspan="6" class="empty-text">Không có dữ liệu phù hợp</td></tr></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="custom-card">
+
+                    <div class="card-header-title">📋 4. Danh Sách Hạng Mục Liên Quan <span id="count-hm" class="badge bg-secondary ms-2">0 kết quả</span></div>
+
+                    <div class="table-responsive">
+
+                        <table class="table-custom">
+
+                            <thead><tr><th>Mã HM</th><th>Tên Hạng Mục</th><th>Thuộc Công Trình</th><th>Khối Lượng</th><th>Tiến Độ</th></tr></thead>
+
+                            <tbody id="tbody-tc-hm"><tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
     </div>
-  </div>
 
-  <!-- ================= 3. JAVASCRIPT ================= -->
-  <script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const banner = document.getElementById('status-banner');
-      const accountInput = document.getElementById('account-field').value.trim();
-      const passInput = document.getElementById('pass-field').value.trim();
 
-      const regex = /^([a-zA-Z0-9_\.\-]+)(\d{10})@qlct\.html$/i;
-      const match = accountInput.match(regex);
 
-      if (!match) {
-        banner.style.display = 'block';
-        banner.style.background = '#fee2e2';
-        banner.style.color = '#dc2626';
-        banner.innerHTML = 'Tài khoản sai định dạng!<br>Yêu cầu: <b>[tên][sdt 10 số]@qlct.html</b><br>(VD: <i>khai1234567890@qlct.html</i>)';
-        return;
-      }
+    <!-- JAVASCRIPT KẾT NỐI SERVER -->
 
-      const extractedPhone = match[2];
+    <script>
 
-      if (passInput !== extractedPhone) {
-        banner.style.display = 'block';
-        banner.style.background = '#fee2e2';
-        banner.style.color = '#dc2626';
-        banner.innerHTML = 'Mật khẩu không đúng!<br>Mật khẩu phải là <b>số điện thoại (10 số)</b> trong tài khoản:<br><b>' + extractedPhone + '</b>';
-        return;
-      }
+        // Tự động chọn đúng Server URL bất kể đang mở file bằng cách nào
 
-      banner.style.display = 'block';
-      banner.style.background = '#d4d8df';
-      banner.style.color = '#495057';
-      banner.innerText = 'Đăng nhập thành công! Đang chuyển hướng...';
+        const API_BASE = (window.location.protocol === 'file:' || window.location.port !== '5000')
 
-      setTimeout(() => {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('admin-screen').style.display = 'block';
-        document.getElementById('user-logged-label').innerText = accountInput;
-        renderAdmin();
-      }, 900);
-    }
+            ? 'http://127.0.0.1:5000'
 
-    function logout() {
-      document.getElementById('admin-screen').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-      document.getElementById('status-banner').style.display = 'none';
-    }
+            : '';
 
-    const tabConfigs = {
-      congty: {
-        title: "Công Ty",
-        fields: [
-          { id: "ma", label: "Mã Công Ty" },
-          { id: "ten", label: "Tên Công Ty" },
-          { id: "diachi", label: "Địa Chỉ / Địa Điểm" },
-          { id: "sdt", label: "Số Điện Thoại" },
-          { id: "daidien", label: "Người Đại Diện" }
-        ]
-      },
-      phongban: {
-        title: "Phòng Ban",
-        fields: [
-          { id: "ma", label: "Mã Phòng Ban" },
-          { id: "ten", label: "Tên Phòng Ban" },
-          { id: "congty", label: "Trực Thuộc Công Ty" },
-          { id: "truongphong", label: "Trưởng Phòng" },
-          { id: "sdt", label: "Số Điện Thoại" }
-        ]
-      },
-      congtrinh: {
-        title: "Công Trình",
-        fields: [
-          { id: "ma", label: "Mã Công Trình" },
-          { id: "ten", label: "Tên Công Trình" },
-          { id: "diadiem", label: "Địa Điểm Thi Công" },
-          { id: "chudautu", label: "Chủ Đầu Tư" },
-          { id: "kinhphi", label: "Dự Toán (Tỷ VNĐ)" }
-        ]
-      },
-      hangmuc: {
-        title: "Hạng Mục",
-        fields: [
-          { id: "ma", label: "Mã Hạng Mục" },
-          { id: "ten", label: "Tên Hạng Mục" },
-          { id: "congtrinh", label: "Thuộc Công Trình" },
-          { id: "khoiluong", label: "Khối Lượng / ĐVT" },
-          { id: "tiendo", label: "Tiến Độ (%)" }
-        ]
-      }
-    };
 
-    let dataset = {
-      congty: [
-        { ma: "CT01", ten: "Tổng Công Ty Xây Dựng Số 1", diachi: "Hà Nội", sdt: "0243888999", daidien: "Nguyễn Văn A" },
-        { ma: "CT02", ten: "Công Ty Xây Lắp Miền Trung", diachi: "Đà Nẵng", sdt: "0236355678", daidien: "Trần B" }
-      ],
-      phongban: [
-        { ma: "PB01", ten: "Phòng Kỹ Thuật Dự Án", congty: "Tổng Công Ty Xây Dựng Số 1", truongphong: "Trần B", sdt: "0912345678" },
-        { ma: "PB02", ten: "Ban Quản Lý An Toàn", congty: "Công Ty Xây Lắp Miền Trung", truongphong: "Lê C", sdt: "0987654321" }
-      ],
-      congtrinh: [
-        { ma: "CT01", ten: "Cầu Nhật Tân Mở Rộng", diadiem: "Hà Nội", chudautu: "Bộ GTVT", kinhphi: "450 Tỷ" },
-        { ma: "CT02", ten: "Cao Tốc Bắc Nam Đoạn 2", diadiem: "Đà Nẵng", chudautu: "Ban QLDA", kinhphi: "890 Tỷ" }
-      ],
-      hangmuc: [
-        { ma: "HM01", ten: "Đổ bê tông trụ T1", congtrinh: "Cầu Nhật Tân Mở Rộng", khoiluong: "1200 m3", tiendo: "80%" },
-        { ma: "HM02", ten: "Trải thảm nhựa mặt đường", congtrinh: "Cao Tốc Bắc Nam Đoạn 2", khoiluong: "15 km", tiendo: "45%" }
-      ]
-    };
 
-    let activeNav = 'congty';
-    let editRowIdx = -1;
-    let tabSearchKeyword = '';
+        let currentEditingData = { ct: [], pb: [], ctrin: [], hm: [] };
 
-    function switchNav(navKey) {
-      activeNav = navKey;
-      clearTabSearch();
-      cancelEditMode();
 
-      document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
-        btn.classList.toggle('active', ['congty', 'phongban', 'congtrinh', 'hangmuc', 'all'][idx] === navKey);
-      });
 
-      if (navKey === 'all') {
-        document.getElementById('standard-crud-container').style.display = 'none';
-        document.getElementById('global-search-container').style.display = 'block';
-        runGlobalSearch();
-      } else {
-        document.getElementById('global-search-container').style.display = 'none';
-        document.getElementById('standard-crud-container').style.display = 'flex';
-        renderAdmin();
-      }
-    }
+        function showAlert(msg) {
 
-    /* --- XỬ LÝ TÌM KIẾM TRÊN BẢNG HIỆN TẠI --- */
-    function handleTabSearch() {
-      tabSearchKeyword = document.getElementById('tab-search-input').value.trim().toLowerCase();
-      renderAdmin();
-    }
+            const al = document.getElementById('action-alert');
 
-    function clearTabSearch() {
-      tabSearchKeyword = '';
-      const input = document.getElementById('tab-search-input');
-      if (input) input.value = '';
-      renderAdmin();
-    }
+            document.getElementById('action-msg').innerText = msg;
 
-    /* --- TÍNH NĂNG TÌM KIẾM TỔNG HỢP CẢ 4 BẢNG --- */
-    function runGlobalSearch() {
-      const q = (document.getElementById('global-search-input').value || '').trim().toLowerCase();
+            al.classList.remove('d-none');
 
-      ['congty', 'phongban', 'congtrinh', 'hangmuc'].forEach(key => {
-        const cfg = tabConfigs[key];
-        const rows = dataset[key].filter(item => {
-          if (!q) return true;
-          return cfg.fields.some(f => String(item[f.id] || '').toLowerCase().includes(q));
-        });
+            setTimeout(() => al.classList.add('d-none'), 3500);
 
-        document.getElementById(`count-${key}`).innerText = `${rows.length} kết quả`;
-        const tbody = document.getElementById(`global-rows-${key}`);
-
-        if (rows.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="${cfg.fields.length}" style="text-align:center; color:#94a3b8; padding:12px;">Không có dữ liệu phù hợp</td></tr>`;
-        } else {
-          tbody.innerHTML = rows.map(item => `
-            <tr>
-              ${cfg.fields.map(f => `<td>${item[f.id] || ''}</td>`).join('')}
-            </tr>
-          `).join('');
         }
-      });
-    }
 
-    /* --- VẼ GIAO DIỆN BẢNG VÀ FORM --- */
-    function renderAdmin() {
-      const cfg = tabConfigs[activeNav];
-      if (!cfg) return;
-      
-      if (editRowIdx === -1) {
-        document.getElementById('panel-form-title').innerText = "➕ Thêm " + cfg.title;
-        document.getElementById('btn-cancel-edit').style.display = "none";
-      } else {
-        document.getElementById('panel-form-title').innerText = "✏️ Cập Nhật " + cfg.title;
-        document.getElementById('btn-cancel-edit').style.display = "block";
-      }
 
-      document.getElementById('panel-table-title').innerText = "📑 Danh Sách " + cfg.title;
-      document.getElementById('tab-search-input').placeholder = `🔍 Tìm trong ${cfg.title.toLowerCase()}...`;
 
-      // Tạo các trường Form
-      document.getElementById('dynamic-inputs').innerHTML = cfg.fields.map(f => `
-        <div class="form-ctrl">
-          <label>${f.label}</label>
-          <input type="text" id="${f.id}" required>
-        </div>
-      `).join('');
+        // ==================== ĐĂNG NHẬP / ĐĂNG XUẤT ====================
 
-      // Tiêu đề cột
-      document.getElementById('table-headers').innerHTML = 
-        cfg.fields.map(f => `<th>${f.label}</th>`).join('') + `<th>Thao Tác</th>`;
+        async function handleLogin(e) {
 
-      // Lọc danh sách theo từ khóa tìm kiếm
-      const allRows = dataset[activeNav] || [];
-      const filtered = allRows.map((item, originalIndex) => ({ item, originalIndex }))
-        .filter(({ item }) => {
-          if (!tabSearchKeyword) return true;
-          return cfg.fields.some(f => String(item[f.id] || '').toLowerCase().includes(tabSearchKeyword));
-        });
+            e.preventDefault();
 
-      const tbody = document.getElementById('table-rows');
+            const u = document.getElementById('login_user').value.trim();
 
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${cfg.fields.length + 1}" style="text-align:center; color:#dc2626; padding:14px;">
-          ${tabSearchKeyword ? `Không tìm thấy kết quả khớp với "<b>${tabSearchKeyword}</b>"` : 'Chưa có dữ liệu'}
-        </td></tr>`;
-        return;
-      }
+            const p = document.getElementById('login_pass').value.trim();
 
-      tbody.innerHTML = filtered.map(({ item, originalIndex }) => `
-        <tr>
-          ${cfg.fields.map(f => `<td>${item[f.id] || ''}</td>`).join('')}
-          <td style="white-space:nowrap;">
-            <button class="btn-edit" onclick="triggerEdit(${originalIndex})">Sửa</button>
-            <button class="btn-del" onclick="triggerDelete(${originalIndex})">Xóa</button>
-          </td>
-        </tr>
-      `).join('');
-    }
+            const alertBox = document.getElementById('login-alert');
 
-    function triggerEdit(idx) {
-      editRowIdx = idx;
-      const cfg = tabConfigs[activeNav];
-      const item = dataset[activeNav][idx];
 
-      document.getElementById('panel-form-title').innerText = "✏️ Cập Nhật " + cfg.title;
-      document.getElementById('btn-cancel-edit').style.display = "block";
 
-      cfg.fields.forEach(f => {
-        const inp = document.getElementById(f.id);
-        if (inp) inp.value = item[f.id] || '';
-      });
-    }
+            try {
 
-    function cancelEditMode() {
-      editRowIdx = -1;
-      document.getElementById('crud-form').reset();
-      const cfg = tabConfigs[activeNav];
-      if (cfg) {
-        document.getElementById('panel-form-title').innerText = "➕ Thêm " + cfg.title;
-        document.getElementById('btn-cancel-edit').style.display = "none";
-      }
-    }
+                const res = await fetch(`${API_BASE}/api/login`, {
 
-    function saveData(e) {
-      e.preventDefault();
-      const cfg = tabConfigs[activeNav];
-      const record = {};
+                    method: 'POST',
 
-      cfg.fields.forEach(f => {
-        record[f.id] = document.getElementById(f.id).value;
-      });
+                    headers: { 'Content-Type': 'application/json' },
 
-      if (editRowIdx === -1) {
-        dataset[activeNav].push(record);
-      } else {
-        dataset[activeNav][editRowIdx] = record;
-        editRowIdx = -1;
-      }
+                    body: JSON.stringify({ username: u, password: p })
 
-      document.getElementById('crud-form').reset();
-      renderAdmin();
-    }
+                });
 
-    function triggerDelete(idx) {
-      if (confirm("Bạn có chắc chắn muốn xóa bản ghi này?")) {
-        if (editRowIdx === idx) cancelEditMode();
-        dataset[activeNav].splice(idx, 1);
-        renderAdmin();
-      }
-    }
-  </script>
+                const data = await res.json();
+
+                if (data.success) {
+
+                    sessionStorage.setItem('current_user', u);
+
+                    alertBox.classList.add('d-none');
+
+                    initApp();
+
+                } else {
+
+                    alertBox.innerText = data.message;
+
+                    alertBox.classList.remove('d-none');
+
+                }
+
+            } catch (err) {
+
+                console.error("Lỗi:", err);
+
+                alertBox.innerText = "Lỗi kết nối tới Server! Hãy chắc chắn server.py đang chạy tại http://127.0.0.1:5000";
+
+                alertBox.classList.remove('d-none');
+
+            }
+
+        }
+
+
+
+        function handleLogout() {
+
+            fetch(`${API_BASE}/api/logout`, { method: 'POST' });
+
+            sessionStorage.removeItem('current_user');
+
+            document.getElementById('main-app').style.display = 'none';
+
+            document.getElementById('login-screen').style.display = 'flex';
+
+        }
+
+
+
+        function checkSession() {
+
+            const user = sessionStorage.getItem('current_user');
+
+            if (user) {
+
+                initApp();
+
+            } else {
+
+                document.getElementById('main-app').style.display = 'none';
+
+                document.getElementById('login-screen').style.display = 'flex';
+
+            }
+
+        }
+
+
+
+        function initApp() {
+
+            const user = sessionStorage.getItem('current_user') || 'khai1234567890@qlct.html';
+
+            document.getElementById('display-user').innerText = user;
+
+            document.getElementById('login-screen').style.display = 'none';
+
+            document.getElementById('main-app').style.display = 'block';
+
+            loadAll();
+
+        }
+
+
+
+        function switchTab(tabId, el) {
+
+            document.querySelectorAll('.sub-nav-tab').forEach(t => t.classList.remove('active'));
+
+            document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+
+            el.classList.add('active');
+
+            document.getElementById('panel-' + tabId).classList.add('active');
+
+            if(tabId === 'tra_cuu') handleGlobalSearch();
+
+        }
+
+
+
+        // ==================== 1. CÔNG TY ====================
+
+        async function loadCongTy() {
+
+            const q = document.getElementById('search-ct') ? document.getElementById('search-ct').value.trim() : '';
+
+            try {
+
+                const res = await fetch(`${API_BASE}/api/cong-ty?q=` + encodeURIComponent(q));
+
+                const list = await res.json();
+
+                currentEditingData.ct = list;
+
+                const tbody = document.getElementById('tbody-congty');
+
+                tbody.innerHTML = '';
+
+
+
+                if (list.length === 0) {
+
+                    tbody.innerHTML = `<tr><td colspan="6" class="empty-text">Chưa có dữ liệu</td></tr>`;
+
+                    return;
+
+                }
+
+
+
+                list.forEach(it => {
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td><strong>${it.ma_ct}</strong></td>
+
+                            <td>${it.ten_ct}</td>
+
+                            <td>${it.dia_chi}</td>
+
+                            <td>${it.sdt}</td>
+
+                            <td>${it.nguoi_dai_dien}</td>
+
+                            <td>
+
+                                <div class="action-btns">
+
+                                    <button class="btn btn-outline-primary btn-sm" title="Sửa" onclick="editCongTy(${it.id})"><i class="fa fa-pen"></i></button>
+
+                                    <button class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteItem('cong_ty', ${it.id})"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            } catch(e) { console.error(e); }
+
+        }
+
+
+
+        async function saveCongTy(e) {
+
+            e.preventDefault();
+
+            const id = document.getElementById('ct_id').value;
+
+            const payload = {
+
+                id: id ? parseInt(id) : null,
+
+                ma_ct: document.getElementById('ct_ma').value.trim(),
+
+                ten_ct: document.getElementById('ct_ten').value.trim(),
+
+                dia_chi: document.getElementById('ct_diachi').value.trim(),
+
+                sdt: document.getElementById('ct_sdt').value.trim(),
+
+                nguoi_dai_dien: document.getElementById('ct_daidien').value.trim()
+
+            };
+
+
+
+            const res = await fetch(`${API_BASE}/api/cong-ty`, {
+
+                method: id ? 'PUT' : 'POST',
+
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify(payload)
+
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                showAlert(result.message);
+
+                cancelEdit('ct');
+
+                loadCongTy();
+
+            } else {
+
+                alert(result.message);
+
+            }
+
+        }
+
+
+
+        function editCongTy(id) {
+
+            const item = currentEditingData.ct.find(x => x.id === id);
+
+            if (!item) return;
+
+            document.getElementById('ct_id').value = item.id;
+
+            document.getElementById('ct_ma').value = item.ma_ct;
+
+            document.getElementById('ct_ten').value = item.ten_ct;
+
+            document.getElementById('ct_diachi').value = item.dia_chi;
+
+            document.getElementById('ct_sdt').value = item.sdt;
+
+            document.getElementById('ct_daidien').value = item.nguoi_dai_dien;
+
+
+
+            document.getElementById('title-ct').innerHTML = '<i class="fa fa-pen"></i> Sửa Công Ty';
+
+            document.getElementById('btn-submit-ct').innerText = 'Cập Nhật Thông Tin';
+
+            document.getElementById('btn-submit-ct').classList.replace('btn-blue-submit', 'btn-warning');
+
+            document.getElementById('btn-cancel-ct').classList.remove('d-none');
+
+        }
+
+
+
+        // ==================== 2. PHÒNG BAN ====================
+
+        async function loadPhongBan() {
+
+            const q = document.getElementById('search-pb') ? document.getElementById('search-pb').value.trim() : '';
+
+            try {
+
+                const res = await fetch(`${API_BASE}/api/phong-ban?q=` + encodeURIComponent(q));
+
+                const list = await res.json();
+
+                currentEditingData.pb = list;
+
+                const tbody = document.getElementById('tbody-phongban');
+
+                tbody.innerHTML = '';
+
+
+
+                if (list.length === 0) {
+
+                    tbody.innerHTML = `<tr><td colspan="6" class="empty-text">Chưa có dữ liệu</td></tr>`;
+
+                    return;
+
+                }
+
+
+
+                list.forEach(it => {
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td><strong>${it.ma_pb}</strong></td>
+
+                            <td>${it.ten_pb}</td>
+
+                            <td>${it.cong_ty}</td>
+
+                            <td>${it.truong_phong}</td>
+
+                            <td>${it.sdt}</td>
+
+                            <td>
+
+                                <div class="action-btns">
+
+                                    <button class="btn btn-outline-primary btn-sm" title="Sửa" onclick="editPhongBan(${it.id})"><i class="fa fa-pen"></i></button>
+
+                                    <button class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteItem('phong_ban', ${it.id})"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            } catch(e) { console.error(e); }
+
+        }
+
+
+
+        async function savePhongBan(e) {
+
+            e.preventDefault();
+
+            const id = document.getElementById('pb_id').value;
+
+            const payload = {
+
+                id: id ? parseInt(id) : null,
+
+                ma_pb: document.getElementById('pb_ma').value.trim(),
+
+                ten_pb: document.getElementById('pb_ten').value.trim(),
+
+                cong_ty: document.getElementById('pb_congty').value.trim(),
+
+                truong_phong: document.getElementById('pb_truongphong').value.trim(),
+
+                sdt: document.getElementById('pb_sdt').value.trim()
+
+            };
+
+
+
+            const res = await fetch(`${API_BASE}/api/phong-ban`, {
+
+                method: id ? 'PUT' : 'POST',
+
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify(payload)
+
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                showAlert(result.message);
+
+                cancelEdit('pb');
+
+                loadPhongBan();
+
+            } else {
+
+                alert(result.message);
+
+            }
+
+        }
+
+
+
+        function editPhongBan(id) {
+
+            const item = currentEditingData.pb.find(x => x.id === id);
+
+            if (!item) return;
+
+            document.getElementById('pb_id').value = item.id;
+
+            document.getElementById('pb_ma').value = item.ma_pb;
+
+            document.getElementById('pb_ten').value = item.ten_pb;
+
+            document.getElementById('pb_congty').value = item.cong_ty;
+
+            document.getElementById('pb_truongphong').value = item.truong_phong;
+
+            document.getElementById('pb_sdt').value = item.sdt;
+
+
+
+            document.getElementById('title-pb').innerHTML = '<i class="fa fa-pen"></i> Sửa Phòng Ban';
+
+            document.getElementById('btn-submit-pb').innerText = 'Cập Nhật Thông Tin';
+
+            document.getElementById('btn-submit-pb').classList.replace('btn-blue-submit', 'btn-warning');
+
+            document.getElementById('btn-cancel-pb').classList.remove('d-none');
+
+        }
+
+
+
+        // ==================== 3. CÔNG TRÌNH (CÓ MÃ PHÒNG BAN) ====================
+
+        async function loadCongTrinh() {
+
+            const q = document.getElementById('search-ctrin') ? document.getElementById('search-ctrin').value.trim() : '';
+
+            try {
+
+                const res = await fetch(`${API_BASE}/api/cong-trinh?q=` + encodeURIComponent(q));
+
+                const list = await res.json();
+
+                currentEditingData.ctrin = list;
+
+                const tbody = document.getElementById('tbody-congtrinh');
+
+                tbody.innerHTML = '';
+
+
+
+                if (list.length === 0) {
+
+                    tbody.innerHTML = `<tr><td colspan="7" class="empty-text">Chưa có dữ liệu</td></tr>`;
+
+                    return;
+
+                }
+
+
+
+                list.forEach(it => {
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td><strong>${it.ma_ctrin}</strong></td>
+
+                            <td><span class="badge-code">${it.ma_pb || '—'}</span></td>
+
+                            <td>${it.ten_ctrin}</td>
+
+                            <td>${it.dia_diem}</td>
+
+                            <td>${it.chu_dau_tu}</td>
+
+                            <td>${it.du_toan}</td>
+
+                            <td>
+
+                                <div class="action-btns">
+
+                                    <button class="btn btn-outline-primary btn-sm" title="Sửa" onclick="editCongTrinh(${it.id})"><i class="fa fa-pen"></i></button>
+
+                                    <button class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteItem('cong_trinh', ${it.id})"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            } catch(e) { console.error(e); }
+
+        }
+
+
+
+        async function saveCongTrinh(e) {
+
+            e.preventDefault();
+
+            const id = document.getElementById('ctrin_id').value;
+
+            const payload = {
+
+                id: id ? parseInt(id) : null,
+
+                ma_ctrin: document.getElementById('ctrin_ma').value.trim(),
+
+                ma_pb: document.getElementById('ctrin_mapb').value.trim(),
+
+                ten_ctrin: document.getElementById('ctrin_ten').value.trim(),
+
+                dia_diem: document.getElementById('ctrin_diadiem').value.trim(),
+
+                chu_dau_tu: document.getElementById('ctrin_chudautu').value.trim(),
+
+                du_toan: document.getElementById('ctrin_dutoan').value.trim()
+
+            };
+
+
+
+            const res = await fetch(`${API_BASE}/api/cong-trinh`, {
+
+                method: id ? 'PUT' : 'POST',
+
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify(payload)
+
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                showAlert(result.message);
+
+                cancelEdit('ctrin');
+
+                loadCongTrinh();
+
+            } else {
+
+                alert(result.message);
+
+            }
+
+        }
+
+
+
+        function editCongTrinh(id) {
+
+            const item = currentEditingData.ctrin.find(x => x.id === id);
+
+            if (!item) return;
+
+            document.getElementById('ctrin_id').value = item.id;
+
+            document.getElementById('ctrin_ma').value = item.ma_ctrin;
+
+            document.getElementById('ctrin_mapb').value = item.ma_pb || '';
+
+            document.getElementById('ctrin_ten').value = item.ten_ctrin;
+
+            document.getElementById('ctrin_diadiem').value = item.dia_diem;
+
+            document.getElementById('ctrin_chudautu').value = item.chu_dau_tu;
+
+            document.getElementById('ctrin_dutoan').value = item.du_toan;
+
+
+
+            document.getElementById('title-ctrin').innerHTML = '<i class="fa fa-pen"></i> Sửa Công Trình';
+
+            document.getElementById('btn-submit-ctrin').innerText = 'Cập Nhật Thông Tin';
+
+            document.getElementById('btn-submit-ctrin').classList.replace('btn-blue-submit', 'btn-warning');
+
+            document.getElementById('btn-cancel-ctrin').classList.remove('d-none');
+
+        }
+
+
+
+        // ==================== 4. HẠNG MỤC ====================
+
+        async function loadHangMuc() {
+
+            const q = document.getElementById('search-hm') ? document.getElementById('search-hm').value.trim() : '';
+
+            try {
+
+                const res = await fetch(`${API_BASE}/api/hang-muc?q=` + encodeURIComponent(q));
+
+                const list = await res.json();
+
+                currentEditingData.hm = list;
+
+                const tbody = document.getElementById('tbody-hangmuc');
+
+                tbody.innerHTML = '';
+
+
+
+                if (list.length === 0) {
+
+                    tbody.innerHTML = `<tr><td colspan="6" class="empty-text">Chưa có dữ liệu</td></tr>`;
+
+                    return;
+
+                }
+
+
+
+                list.forEach(it => {
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td><strong>${it.ma_hm}</strong></td>
+
+                            <td>${it.ten_hm}</td>
+
+                            <td>${it.cong_trinh}</td>
+
+                            <td>${it.khoi_luong}</td>
+
+                            <td><span class="badge bg-primary">${it.tien_do}%</span></td>
+
+                            <td>
+
+                                <div class="action-btns">
+
+                                    <button class="btn btn-outline-primary btn-sm" title="Sửa" onclick="editHangMuc(${it.id})"><i class="fa fa-pen"></i></button>
+
+                                    <button class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteItem('hang_muc', ${it.id})"><i class="fa fa-trash"></i></button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            } catch(e) { console.error(e); }
+
+        }
+
+
+
+        async function saveHangMuc(e) {
+
+            e.preventDefault();
+
+            const id = document.getElementById('hm_id').value;
+
+            const payload = {
+
+                id: id ? parseInt(id) : null,
+
+                ma_hm: document.getElementById('hm_ma').value.trim(),
+
+                ten_hm: document.getElementById('hm_ten').value.trim(),
+
+                cong_trinh: document.getElementById('hm_congtrinh').value.trim(),
+
+                khoi_luong: document.getElementById('hm_khoiluong').value.trim(),
+
+                tien_do: document.getElementById('hm_tiendo').value.trim()
+
+            };
+
+
+
+            const res = await fetch(`${API_BASE}/api/hang-muc`, {
+
+                method: id ? 'PUT' : 'POST',
+
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify(payload)
+
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                showAlert(result.message);
+
+                cancelEdit('hm');
+
+                loadHangMuc();
+
+            } else {
+
+                alert(result.message);
+
+            }
+
+        }
+
+
+
+        function editHangMuc(id) {
+
+            const item = currentEditingData.hm.find(x => x.id === id);
+
+            if (!item) return;
+
+            document.getElementById('hm_id').value = item.id;
+
+            document.getElementById('hm_ma').value = item.ma_hm;
+
+            document.getElementById('hm_ten').value = item.ten_hm;
+
+            document.getElementById('hm_congtrinh').value = item.cong_trinh;
+
+            document.getElementById('hm_khoiluong').value = item.khoi_luong;
+
+            document.getElementById('hm_tiendo').value = item.tien_do;
+
+
+
+            document.getElementById('title-hm').innerHTML = '<i class="fa fa-pen"></i> Sửa Hạng Mục';
+
+            document.getElementById('btn-submit-hm').innerText = 'Cập Nhật Thông Tin';
+
+            document.getElementById('btn-submit-hm').classList.replace('btn-blue-submit', 'btn-warning');
+
+            document.getElementById('btn-cancel-hm').classList.remove('d-none');
+
+        }
+
+
+
+        // ==================== HỦY CHẾ ĐỘ SỬA ====================
+
+        function cancelEdit(type) {
+
+            const titleMap = {
+
+                ct: '<i class="fa fa-plus"></i> Thêm Công Ty',
+
+                pb: '<i class="fa fa-plus"></i> Thêm Phòng Ban',
+
+                ctrin: '<i class="fa fa-plus"></i> Thêm Công Trình',
+
+                hm: '<i class="fa fa-plus"></i> Thêm Hạng Mục'
+
+            };
+
+            document.getElementById(`form-${type}`).reset();
+
+            document.getElementById(`${type}_id`).value = '';
+
+            document.getElementById(`title-${type}`).innerHTML = titleMap[type];
+
+
+
+            const btn = document.getElementById(`btn-submit-${type}`);
+
+            btn.innerText = 'Lưu Thông Tin';
+
+            btn.className = 'btn-blue-submit';
+
+            document.getElementById(`btn-cancel-${type}`).classList.add('d-none');
+
+        }
+
+
+
+        // ==================== XÓA BẢN GHI ====================
+
+        async function deleteItem(table, id) {
+
+            if (!confirm("Bạn có chắc chắn muốn xóa bản ghi này? Hệ thống sẽ gửi yêu cầu xóa sang Letos.")) return;
+
+            const res = await fetch(`${API_BASE}/api/delete/${table}/${id}`, { method: 'DELETE' });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                showAlert(result.message);
+
+                loadAll();
+
+            } else {
+
+                alert(result.message);
+
+            }
+
+        }
+
+
+
+        // ==================== TRA CỨU LIÊN THÔNG ====================
+
+        async function handleGlobalSearch() {
+
+            const q = document.getElementById('search-all').value.trim();
+
+            if (!q) {
+
+                ['ct', 'pb', 'ctrin', 'hm'].forEach(k => {
+
+                    document.getElementById(`tbody-tc-${k}`).innerHTML = `<tr><td colspan="6" class="empty-text">Không có dữ liệu phù hợp</td></tr>`;
+
+                    document.getElementById(`count-${k}`).innerText = `0 kết quả`;
+
+                });
+
+                return;
+
+            }
+
+
+
+            const res = await fetch(`${API_BASE}/api/tra-cuu?q=` + encodeURIComponent(q));
+
+            const data = await res.json();
+
+
+
+            // Công ty
+
+            document.getElementById('count-ct').innerText = `${data.cong_ty.length} kết quả`;
+
+            document.getElementById('tbody-tc-ct').innerHTML = data.cong_ty.length ? data.cong_ty.map(x => `
+
+                <tr><td>${x.ma_ct}</td><td>${x.ten_ct}</td><td>${x.dia_chi}</td><td>${x.sdt}</td><td>${x.nguoi_dai_dien}</td></tr>
+
+            `).join('') : `<tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr>`;
+
+
+
+            // Phòng ban
+
+            document.getElementById('count-pb').innerText = `${data.phong_ban.length} kết quả`;
+
+            document.getElementById('tbody-tc-pb').innerHTML = data.phong_ban.length ? data.phong_ban.map(x => `
+
+                <tr><td>${x.ma_pb}</td><td>${x.ten_pb}</td><td>${x.cong_ty}</td><td>${x.truong_phong}</td><td>${x.sdt}</td></tr>
+
+            `).join('') : `<tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr>`;
+
+
+
+            // Công trình
+
+            document.getElementById('count-ctrin').innerText = `${data.cong_trinh.length} kết quả`;
+
+            document.getElementById('tbody-tc-ctrin').innerHTML = data.cong_trinh.length ? data.cong_trinh.map(x => `
+
+                <tr><td>${x.ma_ctrin}</td><td><span class="badge-code">${x.ma_pb || '—'}</span></td><td>${x.ten_ctrin}</td><td>${x.dia_diem}</td><td>${x.chu_dau_tu}</td><td>${x.du_toan} Tỷ VNĐ</td></tr>
+
+            `).join('') : `<tr><td colspan="6" class="empty-text">Không có dữ liệu phù hợp</td></tr>`;
+
+
+
+            // Hạng mục
+
+            document.getElementById('count-hm').innerText = `${data.hang_muc.length} kết quả`;
+
+            document.getElementById('tbody-tc-hm').innerHTML = data.hang_muc.length ? data.hang_muc.map(x => `
+
+                <tr><td>${x.ma_hm}</td><td>${x.ten_hm}</td><td>${x.cong_trinh}</td><td>${x.khoi_luong}</td><td>${x.tien_do}%</td></tr>
+
+            `).join('') : `<tr><td colspan="5" class="empty-text">Không có dữ liệu phù hợp</td></tr>`;
+
+        }
+
+
+
+        function loadAll() {
+
+            loadCongTy();
+
+            loadPhongBan();
+
+            loadCongTrinh();
+
+            loadHangMuc();
+
+        }
+
+
+
+        window.onload = checkSession;
+
+    </script>
+
 </body>
-</html>
+
+</html> 
+
